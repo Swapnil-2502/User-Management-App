@@ -1,1 +1,33 @@
 // npm i -D nodemon to install devDependencies
+
+Example: JSON vs. JavaScript Object
+
+✅ Valid JSON (String format)
+{
+  "name": "Alice",
+  "age": 25
+}
+
+❌ JavaScript Object (Not JSON)
+{
+  name: "Alice", // No double quotes around keys (allowed in JS, not in JSON)
+  age: 25
+}
+
+The JavaScript engine does not directly understand JSON as a native data structure. 
+JSON is just a text-based format for data exchange, not a JavaScript object.
+So we need to convert JSON format to JavaScript Object and to do that we use this middleware
+app.use(express.json());
+
+What is Multer ?
+Multer is a node.js middleware for handling multipart/form-data, which is 
+primarily used for uploading files. It is written on top of busboy for maximum efficiency.
+
+📌 Why Do We Need Multer?
+Express does not handle file uploads by default.
+Multer makes it easy to upload images, PDFs, videos, etc.
+It stores files in your server’s storage (or memory) for further processing.
+
+bcrypt
+A library to help you hash passwords.
+npm i bcrypt
