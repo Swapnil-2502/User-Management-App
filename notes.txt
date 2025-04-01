@@ -31,3 +31,38 @@ It stores files in your server’s storage (or memory) for further processing.
 bcrypt
 A library to help you hash passwords.
 npm i bcrypt
+
+JWT (JSON WEB TOKEN):
+Used to authenticate user for every request, so we take user details like email, password and
+hash is to create a token and pass it every time a user sends a request, this helps him to stay
+logged in for every request rather then again logging in.
+
+What is JWT (JSON Web Token) and Why is it Important?
+🔍 What is JWT?
+JWT (JSON Web Token) is a secure way to authenticate users and transmit data between a client 
+(e.g., frontend) and a server. It is a self-contained token that holds encoded user data, 
+which can be verified without requiring a database lookup.
+
+JWT is commonly used for:
+✅ User authentication (e.g., login/logout)
+✅ Authorization (restrict access to protected routes)
+✅ API security (stateless authentication for REST APIs)
+
+A JWT (JSON Web Token) consists of three parts:
+1. Header
+2. Payload
+3. Signature
+
+JWT 
+Part	       |   Purpose
+Header	     |   Specifies the type (JWT) and algorithm (HS256).
+Payload	     |   Contains user data and claims (e.g., email, role, exp).
+Signature	   |   Ensures token integrity using a secret key.
+
+🔹 JWTs are self-contained, meaning servers don’t need to store session data.
+🔹 They can be verified using the secret key, ensuring authenticity.
+
+🔑 What is the Use of the Secret Key in JWT?
+The secret key is used to sign and verify the JWT (JSON Web Token). It ensures that:
+✅ The token is authentic (issued by the correct server).
+✅ The token has not been modified (prevents tampering).

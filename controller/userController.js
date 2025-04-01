@@ -1,5 +1,6 @@
 const User = require('../model/user')
-
+const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 const register = async (req,res) => {
     try{
@@ -11,9 +12,18 @@ const register = async (req,res) => {
             return res.status(400).json({message:"Email already exists, try using different email"})
         }
 
-        const data = await User.create({name,email,password});
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password,salt)
 
-        res.status(201).json({message:"User registered successfully",data})
+        const data = await User.create({name,email,password:hash});
+
+        let payload = {id: data.id}
+
+        // Synchronous way to sign a token
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+
+        res.status(201).json({message:"User registered successfully",data,token})
     }
     catch(err){
         res.status(500).json({messageerr: err.message});
@@ -36,9 +46,14 @@ const login = async(req,res) => {
     try{
         const {email, password} = req.body;
 
-        const user_exist = await User.findOne({email:email, password:password})
+        const user_exist = await User.findOne({email:email})
         if(!user_exist){
-            return res.status(401).json({message: "Email or password doesn't match"});
+            return res.status(401).json({message: "User not found"});
+        }
+
+        const isPasswordValid = await bcrypt.compare(password,user_exist.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: "Invalid credentials" });
         }
 
         return res.status(200).json({message: "User logged in Successfully",user_exist})
