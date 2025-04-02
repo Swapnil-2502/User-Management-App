@@ -20,7 +20,7 @@ const register = async (req,res) => {
         let payload = {id: data.id}
 
         // Synchronous way to sign a token
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '2m' });
 
 
         res.status(201).json({message:"User registered successfully",data,token})
@@ -56,7 +56,10 @@ const login = async(req,res) => {
             return res.status(401).json({ message: "Invalid credentials" });
         }
 
-        return res.status(200).json({message: "User logged in Successfully",user_exist})
+        let payload = {id: user_exist.id}
+        const token = jwt.sign(payload, process.env.JWT_SECRET,{expiresIn:'2m'})
+
+        return res.status(200).json({message: "User logged in Successfully",token,user:user_exist})
     }
     catch(err){
         return res.status(500).json({message: err.message});
@@ -65,20 +68,46 @@ const login = async(req,res) => {
 }
 
 const profile = async (req,res) => {
-
     try{
-        const data = await User.findOne({email: req.body.email})
+        //const data = await User.findOne({email: req.body.email})
+        const data = req.user_data
+        console.log(data)
         res.status(200).json(data)
     }
     catch(err){
         res.status(500).json({message: err.message});
     }
+}
 
+const transactions = async (req,res) => {
+    try{
+        //const data = await User.findOne({email: req.body.email})
+        const data = req.user_data
+        console.log(data)
+        res.status(200).json(data)
+    }
+    catch(err){
+        res.status(500).json({message: err.message});
+    }
+}
+
+const wishlist = async (req,res) => {
+    try{
+        //const data = await User.findOne({email: req.body.email})
+        const data = req.user_data
+        console.log(data)
+        res.status(200).json(data)
+    }
+    catch(err){
+        res.status(500).json({message: err.message});
+    }
 }
 
 module.exports = {
     register,
     login,
     profile,
-    users
+    users,
+    transactions,
+    wishlist
 }
